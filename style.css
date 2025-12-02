@@ -10,16 +10,39 @@ table {
 
 td, th {
     border: 1px solid #ccc;
-    padding: 10px;
-    width: 80px;
-    height: 80px;
+    padding: 5px;
+    width: 100px;
+    height: 100px;
     vertical-align: top;
     cursor: pointer;
+    position: relative;
 }
 
 .birthday {
-    background-color: yellow;
+    background-color: #ffe066;
 }
+
+.bubbles {
+    position: absolute;
+    bottom: 5px;
+    left: 5px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px;
+}
+
+.bubble {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    font-size: 0;
+}
+
+/* Bubble colors by person */
+.bubble.Linda { background-color: #f94144; }
+.bubble.Sandy { background-color: #f3722c; }
+.bubble.Laika { background-color: #90be6d; }
+.bubble.Alex { background-color: #577590; }
 
 /* Modal styles */
 .modal {
