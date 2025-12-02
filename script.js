@@ -1,157 +1,100 @@
-const calendarContainer = document.getElementById("calendar-container");
-const modal = document.getElementById("modal");
-const closeBtn = document.getElementById("close");
-const saveBtn = document.getElementById("save");
-const nameSelect = document.getElementById("name");
-const availabilitySelect = document.getElementById("availability");
-
-let selectedCell = null;
-
-// Google Sheets Web App URL
-const SHEET_URL = "PASTE_YOUR_WEB_APP_URL_HERE";
-
-// Store availability locally
-const availabilities = {};
-
-// Calendar months
-const months = [
-    { name: "January 2026", days: 31, startDay: 4 },
-    { name: "February 2026", days: 28, startDay: 0 },
-    { name: "March 2026", days: 31, startDay: 0 }
-];
-
-// --- Create calendar ---
-function createCalendar() {
-    months.forEach(month => {
-        const monthDiv = document.createElement("div");
-        const title = document.createElement("h2");
-        title.textContent = month.name;
-        monthDiv.appendChild(title);
-
-        const table = document.createElement("table");
-        const header = table.insertRow();
-        ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].forEach(day => {
-            const th = document.createElement("th");
-            th.textContent = day;
-            header.appendChild(th);
-        });
-
-        let date = 1;
-        for (let i = 0; i < 6; i++) {
-            const row = table.insertRow();
-            for (let j = 0; j < 7; j++) {
-                const cell = row.insertCell();
-                if (i === 0 && j < month.startDay) {
-                    cell.textContent = "";
-                } else if (date <= month.days) {
-                    cell.dataset.date = `${month.name} ${date}`;
-                    cell.innerHTML = `<div>${date}</div>`;
-
-                    if (month.name === "February 2026" && date === 6) {
-                        cell.classList.add("birthday");
-                        cell.title = "Alex's Birthday 🎉";
-                    }
-
-                    cell.addEventListener("click", () => {
-                        selectedCell = cell;
-                        modal.style.display = "block";
-                    });
-
-                    date++;
-                }
-            }
-        }
-
-        monthDiv.appendChild(table);
-        calendarContainer.appendChild(monthDiv);
-    });
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
 }
 
-// --- Update cell text ---
-function updateCellText(cell) {
-    const existingText = cell.querySelector(".cell-text");
-    if (existingText) existingText.remove();
-
-    const textDiv = document.createElement("div");
-    textDiv.classList.add("cell-text");
-
-    const date = cell.dataset.date;
-    const data = availabilities[date];
-
-    if (!data) {
-        cell.appendChild(textDiv);
-        return;
-    }
-
-    // Special case for Feb 6 birthday
-    if (date === "February 2026 6") {
-        textDiv.innerHTML = "🎉 Happy Birthday Alex! 🎉<br>";
-    }
-
-    for (const person in data) {
-        if (data[person]) {
-            textDiv.innerHTML += `${person} - ${data[person]}<br>`;
-        }
-    }
-
-    cell.appendChild(textDiv);
+h1 {
+    margin-bottom: 30px;
 }
 
-// --- Load data from Google Sheets ---
-async function loadData() {
-    try {
-        const res = await fetch(SHEET_URL);
-        const data = await res.json();
-        data.forEach(row => {
-            availabilities[row.date] = {
-                Linda: row.Linda,
-                Sandy: row.Sandy,
-                Laika: row.Laika,
-                Alex: row.Alex
-            };
-            const cell = document.querySelector(`[data-date='${row.date}']`);
-            if (cell) updateCellText(cell);
-        });
-    } catch (err) {
-        console.error("Error loading data from sheet:", err);
-    }
+table {
+    border-collapse: collapse;
+    margin: 20px auto;
+    table-layout: fixed;
 }
 
-// --- Save data to Google Sheets ---
-async function saveData(date, name, availability) {
-    try {
-        await fetch(SHEET_URL, {
-            method: "POST",
-            body: JSON.stringify({ date, name, availability }),
-            headers: { "Content-Type": "application/json" }
-        });
-    } catch (err) {
-        console.error("Error saving data to sheet:", err);
-    }
+th, td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 120px;
+    height: 120px;
+    vertical-align: top;
+    position: relative;
+    cursor: pointer;
+    background-color: #fff;
+    transition: background 0.3s;
 }
 
-// --- Modal save button ---
-saveBtn.onclick = async () => {
-    if (!selectedCell) return;
+th {
+    background-color: #007bff;
+    color: white;
+    font-size: 14px;
+}
 
-    const date = selectedCell.dataset.date;
-    const name = nameSelect.value;
-    const availability = availabilitySelect.value;
+td:hover {
+    background-color: #e6f0ff;
+}
 
-    if (!availabilities[date]) availabilities[date] = {};
-    availabilities[date][name] = availability;
+.birthday {
+    background-color: #ffe066 !important;
+    font-weight: bold;
+}
 
-    updateCellText(selectedCell);
-    modal.style.display = "none";
-    selectedCell = null;
+.cell-text {
+    margin-top: 5px;
+    font-size: 12px;
+    text-align: left;
+}
 
-    await saveData(date, name, availability);
-};
+.birthday-text {
+    color: #d6336c;
+    font-weight: bold;
+    font-size: 14px;
+}
 
-// --- Modal close ---
-closeBtn.onclick = () => modal.style.display = "none";
-window.onclick = e => { if (e.target == modal) modal.style.display = "none"; }
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right:0; bottom:0;
+    background: rgba(0,0,0,0.5);
+    z-index: 10;
+}
 
-// --- Initialize ---
-createCalendar();
-loadData();
+.modal-content {
+    background: white;
+    padding: 20px;
+    margin: 100px auto;
+    width: 300px;
+    border-radius: 10px;
+    text-align: left;
+}
+
+#close {
+    float: right;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+label, select, button {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+}
+
+button {
+    padding: 8px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
