@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Interactive Calendar 2026</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Interactive Calendar 2026</h1>
+
+    <div id="calendar-container"></div>
+
+    <!-- Modal for selecting availability -->
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <span id="close">&times;</span>
+            <h3>Select Your Availability</h3>
+            <label for="name">Name:</label>
+            <select id="name">
+                <option value="Linda">Linda</option>
+                <option value="Sandy">Sandy</option>
+                <option value="Laika">Laika</option>
+                <option value="Alex">Alex</option>
+            </select>
+
+            <label for="availability">Availability:</label>
+            <select id="availability">
+                <option value="Lunch">Lunch</option>
+                <option value="Dinner">Dinner</option>
+                <option value="Both">Both</option>
+                <option value="Neither">Neither</option>
+            </select>
+            <button id="save">Save</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
