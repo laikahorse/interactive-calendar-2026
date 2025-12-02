@@ -1,67 +1,10 @@
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
+.cell-text {
+    margin-top: 5px;
+    font-size: 12px;
+    text-align: left;
 }
-
-table {
-    border-collapse: collapse;
-    margin: 20px auto;
-}
-
-td, th {
-    border: 1px solid #ccc;
-    padding: 5px;
-    width: 100px;
-    height: 100px;
-    vertical-align: top;
-    cursor: pointer;
-    position: relative;
-}
-
-.birthday {
-    background-color: #ffe066;
-}
-
-.bubbles {
-    position: absolute;
-    bottom: 5px;
-    left: 5px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2px;
-}
-
-.bubble {
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    font-size: 0;
-}
-
-/* Bubble colors by person */
-.bubble.Linda { background-color: #f94144; }
-.bubble.Sandy { background-color: #f3722c; }
-.bubble.Laika { background-color: #90be6d; }
-.bubble.Alex { background-color: #577590; }
-
-/* Modal styles */
-.modal {
-    display: none;
-    position: fixed;
-    top: 0; left: 0; right:0; bottom:0;
-    background: rgba(0,0,0,0.5);
-}
-
-.modal-content {
-    background: white;
-    padding: 20px;
-    margin: 100px auto;
-    width: 300px;
-    border-radius: 10px;
-}
-
-#close {
-    float: right;
-    cursor: pointer;
+.birthday-text {
+    color: #d6336c;
     font-weight: bold;
+    font-size: 14px;
 }
