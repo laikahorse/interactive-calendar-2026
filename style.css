@@ -1,0 +1,44 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+table {
+    border-collapse: collapse;
+    margin: 20px auto;
+}
+
+td, th {
+    border: 1px solid #ccc;
+    padding: 10px;
+    width: 80px;
+    height: 80px;
+    vertical-align: top;
+    cursor: pointer;
+}
+
+.birthday {
+    background-color: yellow;
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right:0; bottom:0;
+    background: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    margin: 100px auto;
+    width: 300px;
+    border-radius: 10px;
+}
+
+#close {
+    float: right;
+    cursor: pointer;
+    font-weight: bold;
+}
